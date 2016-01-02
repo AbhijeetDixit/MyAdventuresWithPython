@@ -10,17 +10,17 @@ def repeat_string(str1, num_repeat):
 	return str1*num_repeat
 
 def find_presence(str1, str2):
-#Check whether a character is present in the string or not
+# Check whether a character is present in the string or not
 	return str2 in str1
 
 def get_middle_char(str1):
-#Retuns the middle character of the string
+# Retuns the middle character of the string
 	str_len = len(str1)
 	mid_idx = str_len / 2
 	return str1[mid_idx]
 
 def get_specified_char(str1, idx):
-#Returns whether the specified character is present in the given string
+# Returns whether the specified character is present in the given string
 	return str1[idx]
 
 def get_sub_str(str1, start_idx, end_idx):
