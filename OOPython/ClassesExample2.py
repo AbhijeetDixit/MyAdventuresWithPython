@@ -43,21 +43,38 @@ class institute:
 		for dept in self.depts:
 			print '%d. %s'%(i+1, dept)
 
+def main():
+	print 'Creating a new City'
+	cName = raw_input('Enter City Name : ')
+	city1 = City(cName)
+	print 'Displaying new City Information'
+	city1.displayCity()
+
+	print 'Creating a new institute'
+	iName = raw_input('Enter the name of institute : ')
+	institute1 = institute(iName)
+	print 'Displaying newly created institute'
+	institute1.displayInfo()
+	response = raw_input('Should we add institute to the created city? (y/n) : ')
+	if response == "y" or response == "Y":
+		city1.addInstitute(institute1)
+		print 'The created city now becomes'
+		city1.displayCity()
+		pass
+
+	print 'We need to add atleast 2 depts in the institute'
+	dept1 = raw_input('Add first dept name : ')
+	institute1.addDepts(dept1)
+	dept2 = raw_input('Add second dept name : ')
+	institute1.addDepts(dept2)
+
+	if response == "y" or response == "Y":
+		print 'The city now becomes : '
+		city1.displayCity()
+	else:
+		print 'The new department becomes : '
+		institute1.displayInfo()
+
+
 if __name__ == '__main__':
-	city1 = City('Bangalore')
-	institute1 = institute('IISc')
-	city1.displayCity()
-	institute1.displayInfo()
-
-	print '\nAdding depts\n'
-
-	institute1.addDepts('CSE')
-	institute1.addDepts('Chemical')
-
-	institute1.displayInfo()
-
-	print '\nAdding institute\n'
-
-	city1.addInstitute(institute1)
-
-	city1.displayCity()
+	main()
