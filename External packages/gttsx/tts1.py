@@ -2,15 +2,22 @@ from gtts import gTTS
 import pygame
 import speech_recognition as sr
 import datetime
+import os
+
+def speak(text_to_speak):
+	tts = gTTS(text=text_to_speak, lang='en')
+	tts.save('file.mp3')
+	pygame.mixer.init()
+	pygame.mixer.music.load('file.mp3')
+	pygame.mixer.music.play()
+	while pygame.mixer.music.get_busy() == True:
+		continue
+	pygame.mixer.music.stop()
+	pygame.mixer.quit()
+	os.remove('file.mp3')
 
 
-tts = gTTS(text='Hey!! This is Jarvis. Tell me what to do', lang='en')
-tts.save('hello.mp3')
-pygame.mixer.init()
-pygame.mixer.music.load('hello.mp3')
-pygame.mixer.music.play()
-while pygame.mixer.music.get_busy() == True:
-	continue
+speak('Hey!! This is Jarvis. Tell me what to do')
 rec = sr.Recognizer()
 with sr.Microphone() as source:
 	audio = rec.listen(source)
@@ -20,34 +27,10 @@ try:
 	if text == 'hello':
 		hour_of_day = datetime.datetime.now().hour
 		if hour_of_day < 6 or hour_of_day > 18:
-			tts = gTTS(text='Good Evening sir!!', lang='en')
-			tts.save('wish.mp3')
-			pygame.mixer.init()
-			pygame.mixer.music.load('wish.mp3')
-			pygame.mixer.music.play()
-			while pygame.mixer.music.get_busy() == True:
-				continue
+			speak('Good Evening sir!!')
 		elif hour_of_day > 12:
-			tts = gTTS(text='Good Afternoon sir!!', lang='en')
-			tts.save('wish.mp3')
-			pygame.mixer.init()
-			pygame.mixer.music.load('wish.mp3')
-			pygame.mixer.music.play()
-			while pygame.mixer.music.get_busy() == True:
-				continue
+			speak('Good Afternoon sir!!')
 		else:
-			tts = gTTS(text='Good Morning sir!!', lang='en')
-			tts.save('wish.mp3')
-			pygame.mixer.init()
-			pygame.mixer.music.load('wish.mp3')
-			pygame.mixer.music.play()
-			while pygame.mixer.music.get_busy() == True:
-				continue
+			speak('Good Morning sir!!')
 except sr.UnknownValueError:
-	tts = gTTS(text='Oops!! I dunno what you said', lang='en')
-	tts.save('except.mp3')
-	pygame.mixer.init()
-	pygame.mixer.music.load('except.mp3')
-	pygame.mixer.music.play()
-	while pygame.mixer.music.get_busy() == True:
-		continue
+	speak('I dunno what you said')
