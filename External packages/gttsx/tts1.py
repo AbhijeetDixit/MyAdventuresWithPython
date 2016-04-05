@@ -17,7 +17,7 @@ def speak(text_to_speak):
 	os.remove('file.mp3')
 
 
-speak('Hey!! This is Jarvis. Tell me what to do')
+speak_from_fd('Hey!! This is Jarvis. Tell me what to do')
 rec = sr.Recognizer()
 with sr.Microphone() as source:
 	audio = rec.listen(source)
@@ -32,5 +32,9 @@ try:
 			speak('Good Afternoon sir!!')
 		else:
 			speak('Good Morning sir!!')
+	elif text == 'goodbye' or text == 'tata' or text == 'bye':
+		speak('Goodbye sir!')
+	elif text == 'awesome' or text == 'good' or text == 'welldone':
+		speak('Thank you sir!')
 except sr.UnknownValueError:
 	speak('I dunno what you said')
