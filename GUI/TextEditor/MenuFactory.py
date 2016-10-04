@@ -4,15 +4,19 @@ import tkFileDialog
 
 
 def dCallback():
+	""" This is a dummy callback. This is present till 
+		all the callbacks are defined."""
 	tkMessageBox.showinfo('info','Button Clicked')
 	pass
 
 class createMenu(object):
 
 	class fileMenu(object):
-		"""fileMenu is the class that creates a file Menu"""
+		"""fileMenu is the class that creates a file Menu. This adds 
+			all the callbacks for submenus"""
 
 		def create(self,toplavelWindow,parentWindow,textareaWidget):
+			""" Creating sub menus for File Menu"""
 			self.toplavelWindow = toplavelWindow
 			self.parentWindow = parentWindow
 			self.textareaWidget = textareaWidget
