@@ -151,6 +151,10 @@ class createMenu(object):
 			editM.add_separator()
 			editM.add_command(label='Select All',command=dCallback)
 			editM.add_command(label='Date/Time',command=dCallback)
+			editM.entryconfig('Find..',state='disabled')
+			editM.entryconfig('Find Next',state='disabled')
+			editM.entryconfig('Replace',state='disabled')
+			editM.entryconfig('Go to..',state='disabled')
 			return editM
 
 		def undoCallback(self):
@@ -168,8 +172,25 @@ class createMenu(object):
 			pass
 
 		def findCallback(self):
-			print self.textareaWidget.index(Tkinter.INSERT)
-			pass
+			countVar = "1.0"
+			top = Tkinter.Toplevel()
+			top.title('Find...')
+			top.geometry('320x100')
+
+			label1 = Tkinter.Label(top,text="Enter Text: ")
+			textEntry = Tkinter.Entry(top)
+			doneButton = Tkinter.Button(top,text='Done', command=top.destroy)
+			cancelButton = Tkinter.Button(top,text='Cancel', command=top.destroy)
+			label1.grid(row=0,column=0,columnspan=1)
+			textEntry.grid(row=0,column=1,columnspan=1)
+			doneButton.grid(row=0,column=3,columnspan=1)
+			cancelButton.grid(row=1,column=3,columnspan=1)
+			var = Tkinter.IntVar()
+			checkBox = Tkinter.Checkbutton(top,text='Match case',variable=var)
+			checkBox.grid(row=3,column=0)
+			var1 = Tkinter.IntVar()
+			Tkinter.Radiobutton(top, text='up', variable=var1, value=1).grid(row=3,column=3)
+			Tkinter.Radiobutton(top,text='down',variable=var1, value=2).grid(row=3,column=4)
 
 	class formatMenu(object):
 		
