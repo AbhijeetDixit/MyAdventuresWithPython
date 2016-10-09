@@ -9,6 +9,7 @@ class Editor(object):
 	def __init__(self, fileName):
 		self.currentFile = fileName
 		self.rootWindow = Tkinter.Tk()
+		self.rootWindow.tk.eval('package require Tix')
 
 	def addWidgetsNRun(self):
 		# Adding a mainFrame that contains all other widgets

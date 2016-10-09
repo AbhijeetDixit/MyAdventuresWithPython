@@ -1,6 +1,8 @@
 import Tkinter
 import tkMessageBox
 import tkFileDialog
+import datetime
+from FontSelector import *
 
 
 def dCallback():
@@ -135,14 +137,15 @@ class createMenu(object):
 			self.toplavelWindow = toplavelWindow
 			self.parentWindow = parentWindow
 			self.textareaWidget = textareaWidget
+			self.entryData = Tkinter.StringVar()
 			editM = Tkinter.Menu(parentWindow, tearoff=0)
 			editM.add_command(label='Undo',command=self.undoCallback)
 			editM.add_command(label='Redo',command=self.redoCallback)
 			editM.add_separator()
-			editM.add_command(label='Cut',command=dCallback)
+			editM.add_command(label='Cut',command=self.cutCallback)
 			editM.add_command(label='Copy',command=dCallback)
 			editM.add_command(label='Paste',command=dCallback)
-			editM.add_command(label='Delete',command=dCallback)
+			editM.add_command(label='Delete',command=self.deleteCallback)
 			editM.add_separator()
 			editM.add_command(label='Find..',command=self.findCallback)
 			editM.add_command(label='Find Next', command=dCallback)
@@ -150,12 +153,33 @@ class createMenu(object):
 			editM.add_command(label='Go to..',command=dCallback)
 			editM.add_separator()
 			editM.add_command(label='Select All',command=dCallback)
-			editM.add_command(label='Date/Time',command=dCallback)
+			editM.add_command(label='Date/Time',command=self.dateTimeCallback)
 			editM.entryconfig('Find..',state='disabled')
 			editM.entryconfig('Find Next',state='disabled')
 			editM.entryconfig('Replace',state='disabled')
 			editM.entryconfig('Go to..',state='disabled')
 			return editM
+
+		def dateTimeCallback(self):
+			now = datetime.datetime.now()
+			dateStr = str(now)
+			self.textareaWidget.insert(Tkinter.INSERT,dateStr)
+			pass
+
+		def cutCallback(self):
+			try:
+				text = self.textareaWidget.get("sel.last")
+				self.textareaWidget.delete("sel.first","sel.last")
+			except Exception, e:
+				raise e
+			pass
+
+		def deleteCallback(self):
+			try:
+				self.textareaWidget.delete("sel.first","sel.last")
+			except Exception, e:
+				raise e
+			pass
 
 		def undoCallback(self):
 			try:
@@ -176,29 +200,37 @@ class createMenu(object):
 			top = Tkinter.Toplevel()
 			top.title('Find...')
 			top.geometry('320x100')
+			top.resizable(width=0, height=0)
+			top.minsize(width=320, height=100)
+			top.maxsize(width=320,height=100)
 
 			label1 = Tkinter.Label(top,text="Enter Text: ")
-			textEntry = Tkinter.Entry(top)
-			doneButton = Tkinter.Button(top,text='Done', command=top.destroy)
+			textEntry = Tkinter.Entry(top,textvariable=self.entryData)
+			doneButton = Tkinter.Button(top,text='Done', command=self.printData)
 			cancelButton = Tkinter.Button(top,text='Cancel', command=top.destroy)
-			label1.grid(row=0,column=0,columnspan=1)
-			textEntry.grid(row=0,column=1,columnspan=1)
-			doneButton.grid(row=0,column=3,columnspan=1)
-			cancelButton.grid(row=1,column=3,columnspan=1)
+			label1.grid(row=0,column=0,columnspan=1,padx=1,pady=2)
+			textEntry.grid(row=0,column=1,columnspan=1,padx=1,pady=2)
+			doneButton.grid(row=0,column=3,columnspan=1,sticky=Tkinter.E,padx=1,pady=2)
+			cancelButton.grid(row=1,column=3,columnspan=1,sticky=Tkinter.E,padx=1,pady=2)
 			var = Tkinter.IntVar()
 			checkBox = Tkinter.Checkbutton(top,text='Match case',variable=var)
-			checkBox.grid(row=3,column=0)
+			checkBox.grid(row=3,column=0,padx=1,pady=2)
 			var1 = Tkinter.IntVar()
-			Tkinter.Radiobutton(top, text='up', variable=var1, value=1).grid(row=3,column=3)
-			Tkinter.Radiobutton(top,text='down',variable=var1, value=2).grid(row=3,column=4)
+			Tkinter.Radiobutton(top, text='up', variable=var1, value=1).grid(row=3,column=3,padx=1,pady=2)
+			Tkinter.Radiobutton(top,text='down',variable=var1, value=2).grid(row=3,column=4,padx=1,pady=2)
 
 	class formatMenu(object):
 		
 		def create(self,toplavelWindow, parentWindow, textareaWidget):
+			self.parentWindow = parentWindow
 			formatM = Tkinter.Menu(parentWindow, tearoff=0)
 			formatM.add_command(label='Word Wrap', command=dCallback)
-			formatM.add_command(label='Font..', command=dCallback)
+			formatM.add_command(label='Font..', command=self.fontSelectCallback)
 			return formatM
+
+		def fontSelectCallback(self):
+			print FontChooser(self.parentWindow).result
+			pass
 		
 	class viewMenu(object):
 	
