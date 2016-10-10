@@ -138,6 +138,7 @@ class createMenu(object):
 			self.parentWindow = parentWindow
 			self.textareaWidget = textareaWidget
 			self.entryData = Tkinter.StringVar()
+			self.lineNumVar = Tkinter.IntVar()
 			editM = Tkinter.Menu(parentWindow, tearoff=0)
 			editM.add_command(label='Undo',command=self.undoCallback)
 			editM.add_command(label='Redo',command=self.redoCallback)
@@ -150,14 +151,12 @@ class createMenu(object):
 			editM.add_command(label='Find..',command=self.findCallback)
 			editM.add_command(label='Find Next', command=dCallback)
 			editM.add_command(label='Replace',command=dCallback)
-			editM.add_command(label='Go to..',command=dCallback)
+			editM.add_command(label='Go to..',command=self.gotoCallback)
 			editM.add_separator()
-			editM.add_command(label='Select All',command=dCallback)
+			editM.add_command(label='Select All',command=self.selectAllCallback)
 			editM.add_command(label='Date/Time',command=self.dateTimeCallback)
-			#editM.entryconfig('Find..',state='disabled')
 			editM.entryconfig('Find Next',state='disabled')
 			editM.entryconfig('Replace',state='disabled')
-			editM.entryconfig('Go to..',state='disabled')
 			return editM
 
 		def dateTimeCallback(self):
@@ -223,6 +222,31 @@ class createMenu(object):
 			pos = self.textareaWidget.search(self.entryData.get(), "1.0", stopindex="end", count=countVar)
 			self.textareaWidget.tag_configure("search",background="green")
 			self.textareaWidget.tag_add("search",pos, "%s + %sc"%(pos, countVar.get()))
+			pass
+
+		def gotoCallback(self):
+			top = Tkinter.Toplevel()
+			top.title('Go To..')
+			top.geometry('320x50')
+			top.resizable(width=0, height=0)
+			top.minsize(width=320, height=100)
+			top.maxsize(width=320,height=100)
+			label1 = Tkinter.Label(top, text="Line Number: ")
+			textEntry = Tkinter.Entry(top, textvariable=self.lineNumVar)
+			button1 = Tkinter.Button(top, text="Go", command=self.gotoCb)
+			button2 = Tkinter.Button(top, text="Cancel", command=top.destroy)
+			label1.grid(row=0,column=0,columnspan=1,pady=1)
+			textEntry.grid(row=0,column=1,columnspan=1)
+			button1.grid(row=1,column=2,columnspan=1)
+			button2.grid(row=1,column=3,columnspan=1)
+			pass
+
+		def gotoCb(self):
+			self.textareaWidget.mark_set("insert","%d.0"%(self.lineNumVar.get()))
+			pass
+
+		def selectAllCallback(self):
+			self.textareaWidget.tag_add(Tkinter.SEL,"1.0",Tkinter.END)
 			pass
 
 	class formatMenu(object):
